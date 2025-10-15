@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: retail-sale
+
+  cloud:
+    function:
+      definition: Order
+    stream:
+      bindings:
+        orderProduct-out-0:
+          destination: order-product-v1
+      kafka:
+        binder:
+          brokers: localhost:9092
+
+server:
+  servlet:
+    context-path: /retail-sale
+  port: 8081

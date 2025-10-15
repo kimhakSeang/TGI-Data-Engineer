@@ -1,0 +1,97 @@
+1. start https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe
+
+2. Install exe (Chose customize and for all user)
+
+3. py -3.11 -m venv airflow_venv
+
+4. .\airflow_venv\Scripts\activate
+
+5. Install cryptography:
+   pip install cryptography
+   
+7. Generate :
+   python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+   
+8. Set Up Docker 
+
+9. Create Airflow DB:
+----------------------
+docker run --rm ^
+-e AIRFLOW__CORE__EXECUTOR=SequentialExecutor ^
+-e AIRFLOW__CORE__FERNET_KEY=Yu1UkBJqHzRORoB3DQzd7O09S0JqsGLjq755JRkLk8I= ^
+-v "%cd%\airflow_home:/opt/airflow" ^
+apache/airflow:2.7.3-python3.11 airflow db init
+	
+10. Create User
+----------------------
+docker run --rm ^
+-e AIRFLOW__CORE__EXECUTOR=SequentialExecutor ^
+-e AIRFLOW__CORE__FERNET_KEY=Yu1UkBJqHzRORoB3DQzd7O09S0JqsGLjq755JRkLk8I= ^
+-v "%cd%\airflow_home:/opt/airflow" ^
+apache/airflow:2.7.3-python3.11 airflow users create ^
+--username admin ^
+--firstname Admin ^
+--lastname User ^
+--role Admin ^
+--email admin@example.com ^
+--password admin
+
+11. Run Airflow Image:
+----------------------
+docker run -d ^
+-p 8080:8080 ^
+-e AIRFLOW__CORE__FERNET_KEY=Yu1UkBJqHzRORoB3DQzd7O09S0JqsGLjq755JRkLk8I= ^
+-e AIRFLOW__CORE__EXECUTOR=SequentialExecutor ^
+-v "%cd%\airflow_home:/opt/airflow" ^
+--name airflow_dev ^
+apache/airflow:2.7.3-python3.11 webserver
+
+12. Start Schedule:
+----------------------
+docker run -d ^
+-e AIRFLOW__CORE__FERNET_KEY=Yu1UkBJqHzRORoB3DQzd7O09S0JqsGLjq755JRkLk8I= ^
+-e AIRFLOW__CORE__EXECUTOR=SequentialExecutor ^
+-v "%cd%\airflow_home:/opt/airflow" ^
+--name airflow_scheduler ^
+apache/airflow:2.7.3-python3.11 scheduler
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+> Check volumn:
+	> Container Terminal:
+		docker run -it --rm apache/airflow:2.7.3-python3.11 bash
+
+    > Activate & Deactivate:
+		>> Terminal: 
+		D:\TGI\Data-Engineer\exercise\Final-Project\airflow_venv\Scripts\activate.bat
+		D:\TGI\Data-Engineer\exercise\Final-Project\airflow_venv\Scripts\deactivate.bat
+		
+		>> VsCode (Don't work):
+		D:\TGI\Data-Engineer\exercise\Final-Project\airflow_venv\Scripts\Activate.ps1
+		deactivate
+
+> RUN Python File:
+	python d:\TGI\Data-Engineer\exercise\Final-Project\airflow_home\dags\Final_Project_Retail_Sale.py
+
+> Mount CSV File:
+  > Create folder in container:
+  docker exec -it airflow_dev mkdir -p /opt/airflow/data
+  
+  > Copy local File to container:
+  docker cp "D:\TGI\Data-Engineer\exercise\Final-Project\retail_sales_dataset.csv" airflow_dev:/opt/airflow/data/retail_sales_dataset.csv
