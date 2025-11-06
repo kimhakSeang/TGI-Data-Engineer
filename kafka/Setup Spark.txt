@@ -7,6 +7,8 @@ HADOOP_HOME
 PYSPARK_DRIVER_PYTHON
 PYSPARK_PYTHON
 
-spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.13:3.5.1 D:\TGI\Data-Engineer\exercise\Final-Project\ETL_Py_Spark.py  
- 
+spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_vscode-terminal:/1760709676343/52.13:3.5.1 D:\TGI\Data-Engineer\exercise\Final-Project\ETL_Py_Spark.py
+
+spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.13:3.5.1 D:\TGI\Data-Engineer\exercise\Final-Project\ETL_Py_Spark.py
+
 spark-submit --jars "D:\TGI\Data-Engineer\exercise\Final-Project\mysql-connector-j-9.4.0\mysql-connector-j-9.4.0.jar" --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1 D:\TGI\Data-Engineer\exercise\Final-Project\ETL_Py_Spark.py

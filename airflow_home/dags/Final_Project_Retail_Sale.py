@@ -22,6 +22,8 @@ ETL Steps:
 
 import pandas as pd
 import mysql.connector as conn
+import matplotlib as mp
+import matplotlib.pyplot as plt
 
 class etl_retail_sale:
     def __init__(self, path):
@@ -32,7 +34,7 @@ class etl_retail_sale:
         # Rename Column Name
         self.retail_transactions.rename(columns = {
             "Transaction ID": "transaction_id",
-            "Date": "date",
+            "Date": "order_date",
             "Customer ID": "customer_id",
             "Gender": "gender",
             "Age": "age",
@@ -91,7 +93,7 @@ class etl_retail_sale:
         print("Total Product: ", self.product_data.shape[0])
 
         # Mapping Transaction to Order
-        self.retail_transactions['order_date'] = pd.to_datetime(self.retail_transactions['order_date'], errors='coerce', infer_datetime_format=True)
+        # self.retail_transactions['order_date'] = pd.to_datetime(self.retail_transactions['order_date'], errors='coerce', infer_datetime_format=True)
         customer_lookup = dict(zip(self.customer_data["customer_code"], self.customer_data["id"]))
         product_lookup = dict(zip(
             zip(retail_transactions_product["product_category"], retail_transactions_product["price_per_unit"]),
@@ -107,7 +109,7 @@ class etl_retail_sale:
             "total_amount": self.retail_transactions["total_amount"], 
             "discount_amount": self.retail_transactions["discount_amount"], 
             "revenue": self.retail_transactions["total_amount"] - self.retail_transactions["discount_amount"],
-            "order_date": self.retail_transactions["date"]
+            "order_date": None
         }
         self.order_data = pd.DataFrame(order_Info)
         print("Total Order: ", self.order_data.shape[0])
@@ -212,6 +214,12 @@ class etl_retail_sale:
 
         print("Success ETL Retail Sale Data ! ")
 
+    def plotting(self):
+        fig, axes = plt.subplots(1, 1, figsize=(6, 4))
+        self.retail_transactions.plot(ax=axes, kind="bar", title="Transaction")
+        plt.show()
+
+
 
 path = r"D:\TGI\Data-Engineer\exercise\Final-Project\airflow_home\retail_sales_dataset.csv"
 db_connection = {
@@ -224,7 +232,7 @@ db_connection = {
 etl  = etl_retail_sale(path)
 etl.cleanning()
 etl.loading(db_connection)
-
+etl.plotting()
 
 
 

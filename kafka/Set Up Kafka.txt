@@ -27,7 +27,7 @@ docker run -d ^
 docker run -d ^
   --name kafka-ui ^
   --network kafka-net ^
-  -p 8080:8080 ^
+  -p 8090:8080 ^
   -e KAFKA_CLUSTERS_0_NAME=local ^
   -e KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=broker:9094 ^
   provectuslabs/kafka-ui:latest

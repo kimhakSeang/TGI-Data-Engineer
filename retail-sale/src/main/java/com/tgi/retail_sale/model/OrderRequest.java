@@ -1,10 +1,14 @@
 package com.tgi.retail_sale.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.Instant;
 
 @Data
+@Builder
+@AllArgsConstructor
 public class OrderRequest {
     private String orderId;
     private Instant orderDate;

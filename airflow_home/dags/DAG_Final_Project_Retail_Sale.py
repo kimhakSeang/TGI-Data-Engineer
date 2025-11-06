@@ -27,22 +27,17 @@ db_connection = {
       "database": ""
 }
 
+
 # --- Task functions ---
 def excuteRetailSaleETL():
     data = etl_retail_sale(path)
     data.cleanning()
     data.loading(db_connection)
 
-
 """
 Title: ETL Retail Sales
-Description: 
-    This DAG runs an ETL pipeline to process retail sales data.
-
+Description: This DAG runs an ETL pipeline to process retail sales data.
 Schedule: Every 1 minute (* * * * *)
-Start Date: 2025-09-23
-Catchup: False
-Tags: ['ETL']
 """
 with DAG(
     'etl_retail_sales',
@@ -56,4 +51,3 @@ with DAG(
         task_id='etl-retail-sale',
         python_callable=excuteRetailSaleETL
     )
-
